@@ -17,18 +17,14 @@ const PORT = process.env.PORT || 4000
 
 app.use(cors(corsOptions))
 app.use(express.json())
-app.use(cookieParser)
-
-app.use("/", (req, res) => {
-    res.send("Hello")
-})
+app.use(cookieParser())
 
 app.use("/login", route)
 
 app.use(errorHandler)
 mongoose.connection.once('open', () => {
     console.log("connected to mongo");
-    app.listen(PORT, () => console.log(`Server running port ${PORT}`))
+    app.listen(PORT, () => console.log(`Server running port http://localhost:${PORT}`))
 })
 mongoose.connection.once('error', () => {
     console.log("error connecting to mongo");
