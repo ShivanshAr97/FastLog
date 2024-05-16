@@ -1,31 +1,28 @@
 import express from "express"
-import cookieParser from "cookie-parser"
-import mongoose from "mongoose"
-import errorHandler from "./middleware/errorHandler.js"
-import cors from "cors"
-import corsOptions from "./config/corsOptions.js"
 import dotenv from "dotenv"
-import dbConn from "./config/dbConn.js"
-import route from "./routes/userRouter.js"
-
 dotenv.config()
+import userRouter from "./routes/userRoutes.js"
+import signUploadRoutes from "./routes/signUploadRoutes.js"
+import fileRoutes from "./routes/fileRoutes.js"
+import textRouter from "./routes/textRoutes.js"
+import {errorHandler} from "./middleware/errorMiddleware.js"
+import connectDB from './config/db.js'
 
-dbConn()
+const port=process.env.PORT||3000
 
-const app = express()
-const PORT = process.env.PORT || 4000
+const app=express()
 
-app.use(cors(corsOptions))
+connectDB()
 app.use(express.json())
-app.use(cookieParser())
-
-app.use("/login", route)
-
+app.use(express.urlencoded({extended:false}))
 app.use(errorHandler)
-mongoose.connection.once('open', () => {
-    console.log("connected to mongo");
-    app.listen(PORT, () => console.log(`Server running port http://localhost:${PORT}`))
-})
-mongoose.connection.once('error', () => {
-    console.log("error connecting to mongo");
+
+app.use('/api/user',userRouter)
+app.use('/api/text',textRouter)
+
+app.use("/api/files", fileRoutes);
+app.use("/api/sign-upload", signUploadRoutes);
+
+app.listen(port,()=>{
+    console.log(`Listening on port ${port}`);
 })
