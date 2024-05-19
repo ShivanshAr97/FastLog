@@ -29,20 +29,16 @@ export const createText = createAsyncThunk(
   }
 );
 
-export const deleteText = createAsyncThunk(
-  "texts/delete",
+export const updateText = createAsyncThunk(
+  "texts/update",
   async (id, thunkAPI) => {
     try {
-      // Extract the token from the Redux store
       const token = thunkAPI.getState().auth.user.token;
 
-      // Call the deleteText service method with the id and token
-      await textService.deleteText(id, token);
+      await textService.updateText(id, token);
 
-      // Return the id of the deleted text
       return id;
     } catch (error) {
-      // Handle errors and return a rejected action with the error message
       const message =
         (error.response &&
           error.response.data &&
@@ -58,7 +54,8 @@ export const deleteText = createAsyncThunk(
 export const getTexts = createAsyncThunk("texts/getAll", async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.token;
-    return await textService.getTexts(token);
+    let a = await textService.getTexts(token);
+    return a
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -111,17 +108,17 @@ export const textSlice = createSlice({
         state.message = action.payload
       })
 
-      .addCase(deleteText.pending, (state) => {
+      .addCase(updateText.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteText.fulfilled, (state, action) => {
+      .addCase(updateText.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.texts = state.texts.filter(
           (text) => text._id !== action.payload.id
         );
       })
-      .addCase(deleteText.rejected, (state, action) => {
+      .addCase(updateText.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

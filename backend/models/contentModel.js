@@ -8,6 +8,8 @@ const contentSchema = mongoose.Schema(
     },
     text: {
       type: String,
+      required:true,
+      default:"Enter text and click save above to save the session."
     },
   },
   {

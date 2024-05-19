@@ -22,6 +22,16 @@ const getTexts = async (token) => {
   return resp.data;
 };
 
+const updateText = async (text, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(API_URL,text, config);
+  return response.data;
+};
+
 const deleteText = async (goalId, token) => {
   const config = {
     headers: {
@@ -32,6 +42,6 @@ const deleteText = async (goalId, token) => {
   return response.data;
 };
 
-const textService = { createText, getTexts, deleteText };
+const textService = { createText, getTexts, deleteText, updateText };
 
 export default textService;

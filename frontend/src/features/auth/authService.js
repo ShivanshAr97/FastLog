@@ -18,9 +18,21 @@ const login = async(userData)=>{
     return resp.data
 }
 
+
+const getTexts = async (token) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const resp = await axios.get(API_URL+ 'me', config);
+    console.log(resp);
+    return resp.data;
+  };
+
 const logout = ()=>{
     localStorage.removeItem('user')
 }
 
-const authService = {register,login,logout}
+const authService = {register,login, getTexts,logout}
 export default authService

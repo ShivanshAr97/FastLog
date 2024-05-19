@@ -1,71 +1,72 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import expressAsyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import contentModel from "../models/contentModel.js";
 
+const registerUser = expressAsyncHandler(async (req, res) => {
+  const { userName, passkey } = req.body;
 
-const registerUser = expressAsyncHandler (async(req,res)=>{
+  if (!userName) {
+    res.status(400);
+    throw new Error("Enter userName");
+  }
 
-    const {userName,passkey} = req.body
+  const userExists = await User.findOne({ userName });
 
-    if(!userName){
-        res.status(400)
-        throw new Error("Enter userName")
-    }
+  if (userExists) {
+    res.status(400);
+    throw new Error("userName already registered. enter the passkey to access");
+  }
 
-    const userExists = await User.findOne({userName})
+  const user = await User.create({
+    userName,
+    passkey,
+  });
 
-    if(userExists){
-        res.status(400)
-        throw new Error("userName already registered. enter the passkey to access")
-    }
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      userName: user.userName,
+      passkey: user.passkey,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+});
 
-    const user = await User.create({
-        userName,passkey
-    })
+const loginUser = expressAsyncHandler(async (req, res) => {
+  const { userName, passkey } = req.body;
 
-    if(user){
-        res.status(201).json({_id:user._id,userName:user.userName,passkey:user.passkey,token:generateToken(user._id)})
-    }
+  const user = await User.findOne({ userName });
 
-    else{
-        res.status(400)
-        throw new Error("Invalid user data")
-    }
-    
-})
+  if (user && passkey == user.passkey) {
+    res.json({
+      _id: user.id,
+      userName: user.userName,
+      passkey: user.passkey,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid login data");
+  }
+});
 
-const loginUser= expressAsyncHandler (async(req,res)=>{
+const about = expressAsyncHandler(async (req, res) => {
+  const { _id, userName, passkey } = await User.findById(req.user.id);
+  res.status(200).json({
+    id: _id,
+    userName,
+    passkey,
+  });
+});
 
-    const {userName,passkey}=req.body
-    
-    const user = await User.findOne({userName})
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
 
-    if(user && passkey==user.passkey){
-        res.json({
-            _id:user.id,
-            userName:user.userName,
-            passkey:user.passkey,token:generateToken(user._id)})
-    }
-
-    else{
-        res.status(400)
-        throw new Error("Invalid login data")
-    }
-})
-
-const about= expressAsyncHandler (async(req,res)=>{
-    const {_id,userName,passkey} = await User.findById(req.user.id)
-    res.status(200).json({
-       id:_id,
-       userName,
-       passkey 
-    })
-})
-
-const generateToken=(id)=>{
-    return jwt.sign({id},process.env.JWT_SECRET,{
-        expiresIn:'30d'
-    })
-}
-
-export {registerUser, loginUser, about}
+export { registerUser, loginUser, about };
