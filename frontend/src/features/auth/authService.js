@@ -10,12 +10,12 @@ const register = async(userData)=>{
     return resp.data
 }
 
-const login = async(userData)=>{
-    const resp = await axios.post(API_URL+'login',userData)
-    if(resp.data){
-        localStorage.setItem('user',JSON.stringify(resp.userData))
-    }
-    return resp.data
+const login = async (userData) => {
+  const resp = await axios.post(API_URL + 'login', userData);
+  if (resp.data.userData) {
+      localStorage.setItem('user', JSON.stringify(resp.data.userData));
+  }
+  return resp.data;
 }
 
 

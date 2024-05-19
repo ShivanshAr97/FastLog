@@ -45,7 +45,7 @@ const FileForm = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch,file]);
+  }, [user, navigate, isError, message, dispatch,file,fileList]);
 
   const uploadFile = async (type) => {
     if (uploadStatus === "done") {

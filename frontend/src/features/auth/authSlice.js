@@ -3,10 +3,7 @@ import authService from "./authService.js"
 
 let user = null;
 try {
-  const userItem = localStorage.getItem("user");
-  if (userItem) {
-    user = JSON.parse(userItem);
-  }
+  const userItem = JSON.parse(localStorage.getItem("user"));
 } catch (error) {
   console.error("Error parsing user from localStorage:", error);
 }
