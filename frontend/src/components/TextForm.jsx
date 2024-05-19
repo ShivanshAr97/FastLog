@@ -7,7 +7,7 @@ import { reset } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const TextForm = () => {
-  const [text, setText] = useState([]);
+  const [text, setText] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,10 +33,10 @@ const TextForm = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, dispatch]);
+  }, []);
 
   const updateChanges = () => {
-    alert("Jo")
+    if (user) {
     dispatch(updateText({ text }))
       .then((result) => {
         console.log(result.payload);
@@ -45,7 +45,15 @@ const TextForm = () => {
       .catch((error) => {
         console.error(error);
       });
+    } else {
+      navigate("/login");
+    }
   };
+
+  useEffect(() => {
+    updateChanges()
+  }, [setText]);
+
   return (
     <>
       <div className="justify-between flex align-middle items-center">

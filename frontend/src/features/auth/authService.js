@@ -12,11 +12,13 @@ const register = async(userData)=>{
 
 const login = async (userData) => {
   const resp = await axios.post(API_URL + 'login', userData);
-  if (resp.data.userData) {
-      localStorage.setItem('user', JSON.stringify(resp.data.userData));
+  console.log(resp);
+  if (resp.data) {
+      localStorage.setItem('user', JSON.stringify(resp.data));
   }
   return resp.data;
 }
+
 
 
 const getTexts = async (token) => {

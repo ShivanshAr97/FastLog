@@ -4,7 +4,7 @@ import textService from "./textService.js";
 // const text = JSON.parse(localStorage.getItem('text'))
 
 const initialState = {
-  texts: [],
+  texts: "",
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -32,12 +32,31 @@ export const createText = createAsyncThunk(
 export const updateText = createAsyncThunk(
   "texts/update",
   async (id, thunkAPI) => {
+
     try {
       const token = thunkAPI.getState().auth.user.token;
+      const {text} = updateText
+      await textService.updateText(text, token);
+    } 
+    catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
-      await textService.updateText(id, token);
-
-      return id;
+export const getTexts = createAsyncThunk(
+  "texts/getAll",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      let a = await textService.getTexts(token);
+      return a;
     } catch (error) {
       const message =
         (error.response &&
@@ -50,33 +69,17 @@ export const updateText = createAsyncThunk(
   }
 );
 
-
-export const getTexts = createAsyncThunk("texts/getAll", async (_, thunkAPI) => {
-  try {
-    const token = thunkAPI.getState().auth.user.token;
-    let a = await textService.getTexts(token);
-    return a
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
-  }
-});
-
-
 export const textSlice = createSlice({
   name: "text",
   initialState,
   reducers: {
-    reset: state => {
-      state.texts = [];
+    reset: (state) => {
+      state.texts = "";
       state.isError = false;
       state.isSuccess = false;
       state.isLoading = false;
       state.message = "";
-  }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -89,35 +92,43 @@ export const textSlice = createSlice({
         state.texts.push(action.payload);
       })
       .addCase(createText.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       })
 
       .addCase(getTexts.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getTexts.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-        state.texts = action.payload
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.texts = action.payload;
       })
       .addCase(getTexts.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       })
 
       .addCase(updateText.pending, (state) => {
         state.isLoading = true;
       })
+
       .addCase(updateText.fulfilled, (state, action) => {
+        const updatedText = action.payload;
+        const textsArray = JSON.parse(state.texts); // Parse the string into an array of objects
+        const index = textsArray.findIndex(textItem => textItem._id === action.payload.id);
+        if (index !== -1) {
+          // Found the item, update its text
+          textsArray[index].text = updatedText;
+          state.texts = JSON.stringify(textsArray); // Convert the array of objects back to a string
+        }
         state.isLoading = false;
         state.isSuccess = true;
-        state.texts = state.texts.filter(
-          (text) => text._id !== action.payload.id
-        );
       })
+      
+    
       .addCase(updateText.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;

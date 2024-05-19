@@ -89,7 +89,6 @@ const updateText = asyncHandler(async (req, res) => {
       return res.status(404).json({ error: "Failed to update text" });
     }
     await updatedText.save();
-    console.log("Updated text:", updatedText);
     res.status(200).json(updatedText);
   } catch (error) {
     console.error("Error updating text:", error);

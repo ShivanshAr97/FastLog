@@ -11,7 +11,7 @@ const FileForm = () => {
   const dispatch = useDispatch();
   const inputRef = useRef();
 
-  const [fileList,setFileList] = useState([])
+  const [fileList, setFileList] = useState([]);
 
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
@@ -31,12 +31,13 @@ const FileForm = () => {
       navigate("/login");
     }
     if (user) {
-      dispatch(getFiles()).then(result => {
-        setFileList(result.payload)
-        // console.log(result.payload);
-    }).catch(error => {
-        console.log(error);
-    });
+      dispatch(getFiles())
+        .then((result) => {
+          setFileList(result.payload);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     if (!user) {
       navigate("/login");
@@ -45,7 +46,7 @@ const FileForm = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch,file,fileList]);
+  }, [user, navigate, isError, message, dispatch, file, fileList]);
 
   const uploadFile = async (type) => {
     if (uploadStatus === "done") {
@@ -78,16 +79,15 @@ const FileForm = () => {
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("dgojs");
     try {
       setLoading(true);
       const fileUrl = await uploadFile("file");
-      const fileName=file.name
-      console.log(fileUrl,fileName);
-      dispatch(createFile({ fileUrl,fileName }));
+      const fileName = file.name;
+      console.log(fileUrl, fileName);
+      dispatch(createFile({ fileUrl, fileName }));
 
       setFile(null);
       setLoading(false);
@@ -153,13 +153,18 @@ const FileForm = () => {
         )}
       </div>
       {fileList.length > 0 ? (
-    <div className="flex gap-4">{fileList.map((file) => (
-        <a target="_blank" href={file.fileUrl}><div className="border " key={file.id}>{file.fileName?file.fileName:"Filedfdhddhdhdhdhd"}</div></a>
-    ))}</div>
-) : (
-    "No Files"
-)}
-
+        <div className="flex gap-4">
+          {fileList.map((file) => (
+            <a target="_blank" href={file.fileUrl}>
+              <div className="border " key={file.id}>
+                {file.fileName ? file.fileName : "Filedfdhddhdhdhdhd"}
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        "No Files"
+      )}
     </>
   );
 };
