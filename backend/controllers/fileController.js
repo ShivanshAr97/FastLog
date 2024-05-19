@@ -1,7 +1,8 @@
-import Video from "../models/videoSchema.js";
+import expressAsyncHandler from "express-async-handler";
+import Video from "../models/videoModel.js";
 
-export const createVideo = async (req, res, next) => {
-  const { fileUrl } = req.body;
+export const createFile = async (req, res, next) => {
+  const { fileUrl,fileName } = req.body;
 
   if (!fileUrl) {
     res.status(400);
@@ -10,7 +11,7 @@ export const createVideo = async (req, res, next) => {
 
   try {
     const file = await Video.create({
-      fileUrl,
+      fileUrl,fileName,user:req.user.id
     });
 
     res.status(201).json({
@@ -23,3 +24,8 @@ export const createVideo = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getFile = expressAsyncHandler(async (req, res) => {
+  const texts = await Video.find({user:req.user.id});
+  res.status(200).json(texts);
+});

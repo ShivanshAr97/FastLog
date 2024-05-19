@@ -24,6 +24,9 @@ const Header = () => {
       </h1>
       {user ? (
         <ul className="flex gap-8 text-lg m-4">
+           <li>
+           Welcome <span className="font-semibold">{user && user.userName}</span>
+            </li>
           <li>
             <button onClick={onlogout}>Logout</button>
           </li>

@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import userModel from "../models/userModel.js";
 import contentModel from "../models/contentModel.js";
 
 const getText = asyncHandler(async (req, res) => {

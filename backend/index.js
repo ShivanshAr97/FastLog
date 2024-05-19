@@ -8,7 +8,7 @@ import textRouter from "./routes/textRoutes.js"
 import {errorHandler} from "./middleware/errorMiddleware.js"
 import connectDB from './config/db.js'
 
-const port=process.env.PORT||3000
+const port=3000
 
 const app=express()
 
@@ -16,6 +16,10 @@ connectDB()
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(errorHandler)
+
+app.get("/",(req,res)=>{
+    res.send("Running")
+})
 
 app.use('/api/user',userRouter)
 app.use('/api/text',textRouter)

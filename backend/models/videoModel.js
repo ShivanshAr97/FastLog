@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
-const contentSchema = mongoose.Schema(
+
+const videoSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
-    text: {
+    fileUrl: {
+      type: String,
+      required: true,
+    },
+    fileName: {
       type: String,
     },
   },
@@ -14,4 +19,5 @@ const contentSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-export default mongoose.model("Content", contentSchema);
+
+export default mongoose.model("Video", videoSchema);

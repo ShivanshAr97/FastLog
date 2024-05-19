@@ -1,9 +1,10 @@
 import express from "express";
-import { createVideo } from "../controllers/fileController.js";
+import { createFile,getFile } from "../controllers/fileController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// http://localhost:5000/api/videos/
-router.post("/", createVideo);
+router.post("/", protect,createFile);
+router.get("/", protect,getFile);
 
 export default router;

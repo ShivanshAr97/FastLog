@@ -22,7 +22,6 @@ const Dashboard = () => {
   const { texts, isLoading, isError, message } = useSelector(
     (state) => state.texts
   );
-  console.log(texts);
   useEffect(() => {
     if (isError) {
       console.log(message);
@@ -44,11 +43,7 @@ const Dashboard = () => {
     return <Loading />;
   }
   return (
-    <div className="mx-6">
-      <h1 className="text-2xl my-2">
-        Welcome <span className="font-semibold">{user && user.userName}</span>
-      </h1>
-      <div className="border my-2"></div>
+    <div className="mx-6 my-2">
       <FileForm />
       <div className="border my-2"></div>
       <TextForm />
