@@ -10,6 +10,10 @@ import connectDB from "./config/db.js";
 
 const port = process.env.PORT || 3000;
 
+app.use(cors({
+  origin: "https://fastlog.vercel.app"
+}));
+
 const app = express();
 
 connectDB();

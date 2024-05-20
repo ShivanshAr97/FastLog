@@ -57,7 +57,6 @@ const TextForm = () => {
   return (
     <>
       <div className="justify-between flex align-middle items-center">
-        <h1 className="text-xl">Paste Data</h1>
         <h1 className="text-xl font-semibold">Paste Data</h1>
         <button className="border px-4 py-1 rounded-lg bg-green-600 text-white" onClick={updateChanges}>
           Save
