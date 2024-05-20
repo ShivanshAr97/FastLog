@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../public/logo.png"
+import Logo from "/logo.png"
 import { toast } from "react-toastify";
 
 const Header = () => {
