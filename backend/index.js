@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import cors from "cors"
 import userRouter from "./routes/userRoutes.js";
 import signUploadRoutes from "./routes/signUploadRoutes.js";
 import fileRoutes from "./routes/fileRoutes.js";
@@ -10,16 +11,16 @@ import connectDB from "./config/db.js";
 
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: "https://fastlog.vercel.app"
-}));
-
 const app = express();
 
 connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
+
+app.use(cors({
+  origin: "https://fastlog.vercel.app"
+}));
 
 app.get("/",(req,res)=>{
     res.send("Running")
