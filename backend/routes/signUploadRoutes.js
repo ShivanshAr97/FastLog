@@ -3,7 +3,6 @@ import { generateSignature } from "../controllers/signUpload.js";
 
 const router = express.Router();
 
-// http://localhost:5000/api/sign-upload
 router.post("/", generateSignature);
 
 export default router;
