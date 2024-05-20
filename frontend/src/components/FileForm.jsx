@@ -49,7 +49,7 @@ const FileForm = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch, file, fileList]);
+  }, [user, navigate, isError, message, dispatch, file]);
 
   const uploadFile = async (type) => {
     const data = new FormData();
