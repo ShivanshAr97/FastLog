@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "/api/files/";
+const API_URL = "https://fastlog.vercel.app/api/files/";
 
 const createFile = async (fileData, token) => {
   const config = {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "/api/text/";
+const API_URL = "https://fastlog.vercel.app/api/text/";
 
 const createText = async (textData, token) => {
   const config = {
