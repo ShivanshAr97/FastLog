@@ -17,11 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  setInterval(() => {
-    res.send("Running");
-  }, 10000);
-});
+app.get("/",(req,res)=>{
+    res.send("Running")
+    return 
+})
+
 
 app.use("/api/user", userRouter);
 app.use("/api/text", textRouter);
