@@ -18,14 +18,17 @@ export const createFile = async (req, res, next) => {
       success: true,
       file,
     });
+    return
   } catch (error) {
     console.log(error);
     res.status(500);
     next(error);
+    return 
   }
 };
 
 export const getFile = expressAsyncHandler(async (req, res) => {
   const texts = await Video.find({user:req.user.id});
   res.status(200).json(texts);
+  return
 });

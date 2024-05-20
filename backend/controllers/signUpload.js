@@ -24,9 +24,11 @@ export const generateSignature = (req, res, next) => {
     }, process.env.CLOUDINARY_API_SECRET);
 
     res.status(200).json({ timestamp, signature })
+    return
   } catch (error) {
     console.log(error);
     res.status(500);
     next(error);
+    return 
   }
 }

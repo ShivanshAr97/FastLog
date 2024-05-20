@@ -31,9 +31,11 @@ const updateText = asyncHandler(async (req, res) => {
 
     // console.log("Text updated successfully:", updatedText);
     res.status(200).json(updatedText);
+    return
   } catch (error) {
     console.error("Error updating text:", error);
     res.status(500).json({ error: "Internal Server Error" });
+    return 
   }
 });
 

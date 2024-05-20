@@ -19,6 +19,7 @@ app.use(errorHandler)
 
 app.get("/",(req,res)=>{
     res.send("Running")
+    return 
 })
 
 app.use('/api/user',userRouter)

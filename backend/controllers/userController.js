@@ -30,6 +30,7 @@ const registerUser = expressAsyncHandler(async (req, res) => {
       passkey: user.passkey,
       token: generateToken(user._id),
     });
+    return
   } else {
     res.status(400);
     throw new Error("Invalid user data");
@@ -61,6 +62,7 @@ const about = expressAsyncHandler(async (req, res) => {
     userName,
     passkey,
   });
+  return
 });
 
 const generateToken = (id) => {
