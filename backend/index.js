@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
 app.use(cors({
-  origin: ["https://fastlog.vercel.app", "http://localhost:5173/"],
+  origin: ["https://login-final.vercel.app", "http://localhost:5173/"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

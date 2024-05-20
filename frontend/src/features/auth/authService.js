@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL='https://fastlog.vercel.app/api/user/'
+const API_URL='https://login-final.vercel.app/api/user/'
 
 const register = async(userData)=>{
     const resp = await axios.post(API_URL,userData)
