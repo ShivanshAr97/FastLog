@@ -28,6 +28,7 @@ const Register = () => {
     }
     if (isSuccess || user) {
       navigate("/");
+      toast.success("Logged in")
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
@@ -48,7 +49,7 @@ const Register = () => {
     };
 
     dispatch(register(data));
-    console.log(data);
+    // console.log(data);
   };
 
   if (isLoading) {
