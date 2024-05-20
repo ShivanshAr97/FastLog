@@ -32,11 +32,11 @@ app.get("/",(req,res)=>{
 })
 
 
-app.use("https://login-final.vercel.app/api/user", userRouter);
-app.use("https://login-final.vercel.app/api/text", textRouter);
+app.use("/api/user", userRouter);
+app.use("/api/text", textRouter);
 
-app.use("https://login-final.vercel.app/api/files", fileRoutes);
-app.use("https://login-final.vercel.app/api/sign-upload", signUploadRoutes);
+app.use("/api/files", fileRoutes);
+app.use("/api/sign-upload", signUploadRoutes);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
