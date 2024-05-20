@@ -33,16 +33,10 @@ export const deleteFile = createAsyncThunk(
   "files/delete",
   async (id, thunkAPI) => {
     try {
-      // Extract the token from the Redux store
       const token = thunkAPI.getState().auth.user.token;
-
-      // Call the deleteFile service method with the id and token
       await fileService.deleteFile(id, token);
-
-      // Return the id of the deleted file
       return id;
     } catch (error) {
-      // Handle errors and return a rejected action with the error message
       const message =
         (error.response &&
           error.response.data &&

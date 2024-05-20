@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { GrUpdate } from "react-icons/gr";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const TextForm = () => {
   const [text, setText] = useState("");
+  const [textFetched, setTextFetched] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,8 +18,28 @@ const TextForm = () => {
   );
 
   useEffect(() => {
-    if (user) {
+    if (user && !textFetched) { // Check if user is logged in and data has not been fetched
       dispatch(getTexts())
+        .then((result) => {
+          console.log(result.payload);
+          setText(result.payload.text);
+          setTextFetched(true); // Set textFetched to true after fetching data
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else if (!user) {
+      navigate("/login");
+    }
+  
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch, user, textFetched, text]); 
+
+  const updateChanges = useCallback(() => {
+    if (user) {
+      dispatch(updateText({ text }))
         .then((result) => {
           console.log(result.payload);
           setText(result.payload.text);
@@ -29,30 +50,7 @@ const TextForm = () => {
     } else {
       navigate("/login");
     }
-
-    return () => {
-      dispatch(reset());
-    };
-  }, []);
-
-  const updateChanges = () => {
-    if (user) {
-    dispatch(updateText({ text }))
-      .then((result) => {
-        console.log(result.payload);
-        setText(result.payload.text);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    } else {
-      navigate("/login");
-    }
-  };
-
-  useEffect(() => {
-    updateChanges()
-  }, [setText]);
+  }, [dispatch, user, text]);
 
   return (
     <>

@@ -31,12 +31,12 @@ export const createText = createAsyncThunk(
 
 export const updateText = createAsyncThunk(
   "texts/update",
-  async (id, thunkAPI) => {
+  async (text, thunkAPI) => {
 
     try {
       const token = thunkAPI.getState().auth.user.token;
-      const {text} = updateText
-      await textService.updateText(text, token);
+      const updatedText = await textService.updateText(text, token);
+      return updatedText;
     } 
     catch (error) {
       const message =
@@ -116,17 +116,35 @@ export const textSlice = createSlice({
       })
 
       .addCase(updateText.fulfilled, (state, action) => {
-        const updatedText = action.payload;
-        const textsArray = JSON.parse(state.texts); // Parse the string into an array of objects
-        const index = textsArray.findIndex(textItem => textItem._id === action.payload.id);
-        if (index !== -1) {
-          // Found the item, update its text
-          textsArray[index].text = updatedText;
-          state.texts = JSON.stringify(textsArray); // Convert the array of objects back to a string
-        }
         state.isLoading = false;
         state.isSuccess = true;
+        state.texts = action.payload;
       })
+      
+      // .addCase(updateText.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isSuccess = true;
+      //   const index = state.texts.findIndex(text => text.id === action.payload.id);
+      //   if (index !== -1) {
+      //     state.texts[index] = action.payload;
+      //   }
+      // })
+
+      // .addCase(updateText.fulfilled, (state, action) => {
+      //   const updatedText = action.payload;
+      //   let textsString = state.texts;
+      //   const index = textsString.indexOf(`"_id": "${action.payload.id}"`);
+      //   if (index !== -1) {
+      //       const startIndex = textsString.lastIndexOf('{', index);
+      //       const endIndex = textsString.indexOf('}', index) + 1;
+      //       const textToUpdate = textsString.substring(startIndex, endIndex);
+      //       const newText = textToUpdate.replace(/"text": ".+?"/, `"text": "${updatedText}"`);
+      //       textsString = textsString.replace(textToUpdate, newText);
+      //     }    
+      //     state.texts = updatedText;
+      //   state.isLoading = false;
+      //   state.isSuccess = true;
+      // })
       
     
       .addCase(updateText.rejected, (state, action) => {

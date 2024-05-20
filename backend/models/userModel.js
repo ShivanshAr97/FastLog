@@ -8,11 +8,6 @@ const userSchema = mongoose.Schema(
     passkey: {
       type: String,
     },
-    text: {
-      type: String,
-      required: true,
-      default: "Enter text and click save above to save the session.",
-    },
   },
   {
     timestamps: true,
