@@ -29,61 +29,12 @@ const updateText = asyncHandler(async (req, res) => {
     existingText.text = newText; // Update the text
     const updatedText = await existingText.save();
 
-    console.log("Text updated successfully:", updatedText);
+    // console.log("Text updated successfully:", updatedText);
     res.status(200).json(updatedText);
   } catch (error) {
     console.error("Error updating text:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-// const updateText = asyncHandler(async (req, res) => {
-//   if (!textId) {
-//     await findTextId();
-//     if (!textId) {
-//       return res.status(404).json({ error: "Text not found" });
-//     }
-//   }
-//   try {
-//     const updatedText = await contentModel.findByIdAndUpdate(
-//       textId,
-//       { text: req.body }, // Assuming req.body is the updated text
-//       { new: true }
-//     );
-//     if (!updatedText) {
-//       return res.status(404).json({ error: "Failed to update text" });
-//     }
-    
-//     console.log(updatedText);
-//     res.status(200).json(updatedText);
-//   } catch (error) {
-//     console.error("Error updating text:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-// const updateText = asyncHandler(async (req, res) => {
-  // console.log(req.body);
-  // try {
-  //   const updatedText = await contentModel.findByIdAndUpdate(
-  //     {_id:req.body.id},{text:req.body.text},
-  //     {
-  //       new: true,
-  //     }
-  //   );
-  //   if (!updatedText) {
-  //     return res.status(404).json({ error: "Failed to update text" });
-  //   }
-    
-  //   console.log(updatedText);
-  //   await updatedText.save();
-  //   res.status(200).json(updatedText);
-  // } catch (error) {
-  //   console.error("Error updating text:", error);
-  //   res.status(500).json({ error: "Internal Server Error" });
-  // }
-// });
-
 
 export { getText, updateText };
