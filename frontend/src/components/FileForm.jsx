@@ -6,9 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createFile } from "../features/files/fileSlice";
 import Loading from "./Loading";
-import { MdOutlineCancel } from "react-icons/md";
-import { FaFileAlt } from "react-icons/fa";
-import { FaRegCheckCircle } from "react-icons/fa";
 
 const FileForm = () => {
   const dispatch = useDispatch();
@@ -52,6 +49,10 @@ const FileForm = () => {
   }, [user, navigate, isError, message, dispatch, file, fileList]);
 
   const uploadFile = async (type) => {
+    if (uploadStatus === "done") {
+      clearFileInput();
+      return;
+    }
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "obw4ebow");
@@ -64,7 +65,7 @@ const FileForm = () => {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          // console.log(percentCompleted);
+          console.log(percentCompleted);
           setProgress(percentCompleted);
         },
       });
@@ -79,16 +80,13 @@ const FileForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    if (uploadStatus === "done") {
-      clearFileInput();
-      return;
-    }
     e.preventDefault();
+    console.log("dgojs");
     try {
       setLoading(true);
       const fileUrl = await uploadFile("file");
       const fileName = file.name;
-      // console.log(fileUrl, fileName);
+      console.log(fileUrl, fileName);
       dispatch(createFile({ fileUrl, fileName }));
 
       setFile(null);
@@ -112,68 +110,55 @@ const FileForm = () => {
   return (
     <>
       <div className="justify-between flex align-middle items-center">
-        <h1 className="text-xl font-semibold">Files</h1>
-        <div className="flex align-middle items-center gap-4">
-          <input
-            className="hidden"
-            ref={inputRef}
-            type="file"
-            onChange={(e) => setFile((prev) => e.target.files[0])}
-          />
-          {!file && (
-            <button
-              className="border px-4 py-1 rounded-lg bg-blue-500 text-white"
-              onClick={onChooseFile}
-            >
-              Browse files
-            </button>
-          )}
-          {file && (
-            <div className="flex">
-              <div className="flex items-center gap-2 mx-4 px-2 rounded-md bg-pink-200">
-                <p>{file?.name}</p>
-                {uploadStatus === "select" ? (
-                  <button onClick={clearFileInput}>
-                    <span className="py-4">
-                      <MdOutlineCancel />
-                    </span>
-                  </button>
-                ) : (
-                  <div>
-                    {uploadStatus === "uploading" ? (
-                      `${progress}%`
-                    ) : uploadStatus === "done" ? (
-                      <span>
-                        <FaRegCheckCircle />
-                      </span>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-              <button
-                className="border px-4 py-1 rounded-lg bg-pink-400 text-white"
-                onClick={handleSubmit}
-              >
-                {uploadStatus === "select" || uploadStatus === "uploading"
-                  ? "Upload"
-                  : "Done"}
+        <h1 className="text-xl">Files</h1>
+        <input
+          className="hidden"
+          ref={inputRef}
+          type="file"
+          onChange={(e) => setFile((prev) => e.target.files[0])}
+        />
+        {!file && (
+          <button className="" onClick={onChooseFile}>
+            Browse files
+          </button>
+        )}
+        {file && (
+          <>
+            <p>{file?.name}</p>
+            {uploadStatus === "select" ? (
+              <button onClick={clearFileInput}>
+                <span class="material-symbols-outlined close-icon">X</span>
               </button>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="check-circle">
+                {uploadStatus === "uploading" ? (
+                  `${progress}%`
+                ) : uploadStatus === "done" ? (
+                  <span
+                    class="material-symbols-outlined"
+                    style={{ fontSize: "20px" }}
+                  >
+                    check
+                  </span>
+                ) : null}
+              </div>
+            )}
+            <button className="upload-btn" onClick={handleSubmit}>
+              {uploadStatus === "select" || uploadStatus === "uploading"
+                ? "Upload"
+                : "Done"}
+            </button>
+            <br />
+          </>
+        )}
       </div>
-      <div className="mt-4"></div>
       {fileList.length > 0 ? (
-        <div className="flex gap-4 whitespace-nowrap">
-          {fileList.slice().reverse().map((file) => (
+        <div className="flex gap-4">
+          {fileList.map((file) => (
             <a target="_blank" href={file.fileUrl}>
-              <span
-                className="flex items-center border rounded-md px-2 bg-slate-200 gap-2"
-                key={file.id}
-              >
-                <FaFileAlt />
-                {file.fileName ? file.fileName : "fastlog"}
-              </span>
+              <div className="border " key={file.id}>
+                {file.fileName ? file.fileName : "Filedfdhddhdhdhdhd"}
+              </div>
             </a>
           ))}
         </div>

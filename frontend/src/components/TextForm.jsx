@@ -5,7 +5,6 @@ import { GrUpdate } from "react-icons/gr";
 import { getTexts, updateText } from "../features/texts/textSlice";
 import { reset } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 const TextForm = () => {
   const [text, setText] = useState("");
@@ -19,12 +18,12 @@ const TextForm = () => {
   );
 
   useEffect(() => {
-    if (user && !textFetched) {
+    if (user && !textFetched) { // Check if user is logged in and data has not been fetched
       dispatch(getTexts())
         .then((result) => {
-          // console.log(result.payload);
+          console.log(result.payload);
           setText(result.payload.text);
-          setTextFetched(true);
+          setTextFetched(true); // Set textFetched to true after fetching data
         })
         .catch((error) => {
           console.error(error);
@@ -39,11 +38,10 @@ const TextForm = () => {
   }, [dispatch, user, textFetched, text]); 
 
   const updateChanges = useCallback(() => {
-    toast.success("Updated successfully")
     if (user) {
       dispatch(updateText({ text }))
         .then((result) => {
-          // console.log(result.payload);
+          console.log(result.payload);
           setText(result.payload.text);
         })
         .catch((error) => {
@@ -57,9 +55,9 @@ const TextForm = () => {
   return (
     <>
       <div className="justify-between flex align-middle items-center">
-        <h1 className="text-xl font-semibold">Paste Data</h1>
-        <button className="border px-4 py-1 rounded-lg bg-green-600 text-white" onClick={updateChanges}>
-          Save
+        <h1 className="text-xl">Paste Data</h1>
+        <button onClick={updateChanges}>
+          <GrUpdate />
         </button>
       </div>
       <textarea
