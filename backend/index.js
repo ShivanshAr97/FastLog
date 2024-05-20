@@ -18,11 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
-app.use(cors({
-  origin: ["https://login-final.vercel.app", "http://localhost:5173/"],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+const corsOptions ={
+  origin:['https://fastlog.vercel.app','http://localhost:5173','https://login-final.vercel.app/'], 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
+
 
 app.get("/",(req,res)=>{
     res.send("Running")
@@ -30,11 +32,11 @@ app.get("/",(req,res)=>{
 })
 
 
-app.use("/api/user", userRouter);
-app.use("/api/text", textRouter);
+app.use("https://login-final.vercel.app/api/user", userRouter);
+app.use("https://login-final.vercel.app/api/text", textRouter);
 
-app.use("/api/files", fileRoutes);
-app.use("/api/sign-upload", signUploadRoutes);
+app.use("https://login-final.vercel.app/api/files", fileRoutes);
+app.use("https://login-final.vercel.app/api/sign-upload", signUploadRoutes);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
