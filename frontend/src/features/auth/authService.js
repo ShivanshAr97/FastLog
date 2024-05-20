@@ -28,7 +28,7 @@ const getTexts = async (token) => {
       },
     };
     const resp = await axios.get(API_URL+ 'me', config);
-    console.log(resp);
+    // console.log(resp);
     return resp.data;
   };
 
