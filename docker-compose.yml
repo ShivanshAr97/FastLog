@@ -1,0 +1,33 @@
+services:
+  frontend:
+    # image: shivanshar97/fastlog-frontend # hub.docker.com
+    build:
+      context: './frontend'
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    container_name: fastlog-frontend
+    networks:
+      - fastlog-network
+    depends_on:
+      - backend
+  backend:
+    # image: shivanshar97/fastlog-backend
+    build:
+      context: './backend'
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - fastlog-network
+    container_name: fastlog-backend
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY} 
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+
+networks: 
+  fastlog-network:
