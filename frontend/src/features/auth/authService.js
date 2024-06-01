@@ -12,7 +12,7 @@ const register = async(userData)=>{
 
 const login = async (userData) => {
   const resp = await axios.post(API_URL + 'login', userData);
-  console.log(resp);
+  // console.log(resp);
   if (resp.data) {
       localStorage.setItem('user', JSON.stringify(resp.data));
   }
@@ -28,7 +28,7 @@ const getTexts = async (token) => {
       },
     };
     const resp = await axios.get(API_URL+ 'me', config);
-    console.log(resp);
+    // console.log(resp);
     return resp.data;
   };
 

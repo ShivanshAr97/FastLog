@@ -12,6 +12,14 @@ const TextForm = () => {
   const [textFetched, setTextFetched] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
 
   const { user } = useSelector((state) => state.auth);
   const { texts, isLoading, isError, message } = useSelector(
@@ -22,7 +30,7 @@ const TextForm = () => {
     if (user && !textFetched) { 
       dispatch(getTexts())
         .then((result) => {
-          console.log(result.payload);
+          // console.log(result.payload);
           setText(result.payload.text);
           setTextFetched(true); 
         })
@@ -39,7 +47,7 @@ const TextForm = () => {
   }, [dispatch, user, textFetched, text]); 
 
   const updateChanges = useCallback(() => {
-    toast.success("Updated successfully")
+    toast.success("Updated successfully",toastOptions)
     if (user) {
       dispatch(updateText({ text }))
         .then((result) => {

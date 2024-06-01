@@ -9,6 +9,14 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => {
       return state.auth;
@@ -24,14 +32,15 @@ const Login = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message);
+      toast.error(message,toastOptions);
       console.log(message);
     }
-    if (isSuccess || user) {
+    if (isSuccess && user) {
+      toast.success("Logged in",toastOptions);
       navigate("/");
     }
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [user, message, navigate, dispatch]);
 
   const onsubmit = (e) => {
     e.preventDefault();

@@ -9,6 +9,14 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+
   const [data, setData] = useState({
     userName: "",
     passkey: "",
@@ -24,14 +32,14 @@ const Register = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error(message);
+      toast.error(message,toastOptions);
     }
-    if (isSuccess || user) {
+    if (isSuccess && user) {
       navigate("/");
-      toast.success("Logged in")
+      toast.success("Logged in",toastOptions)
     }
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [user, message, navigate, dispatch]);
 
   useEffect(() => {
     const genPasskey = () => {

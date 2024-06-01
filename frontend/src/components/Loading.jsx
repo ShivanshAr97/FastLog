@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const Loading = () => {
   return (
-    <div className='bg-red-700 text-4xl'>Loading...</div>
-  )
-}
+    <div className="text-red-500 text-4xl my-12 mx-4">
+      <h1>Loading...</h1>
+      <br />
+      <h1>Please wait</h1>
+    </div>
+  );
+};
 
-export default Loading
+export default Loading;

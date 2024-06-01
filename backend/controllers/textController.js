@@ -29,7 +29,7 @@ const updateText = asyncHandler(async (req, res) => {
     existingText.text = newText; // Update the text
     const updatedText = await existingText.save();
 
-    console.log("Text updated successfully:", updatedText);
+    // console.log("Text updated successfully:", updatedText);
     res.status(200).json(updatedText);
     return
   } catch (error) {

@@ -164,7 +164,7 @@ const FileForm = () => {
       </div>
       <div className="mt-4"></div>
       {fileList.length > 0 ? (
-        <div className="flex gap-4 whitespace-nowrap">
+        <div className="flex gap-4 whitespace-nowrap overflow-y-auto mb-4">
           {fileList.slice().reverse().map((file) => (
             <a target="_blank" href={file.fileUrl}>
               <span
